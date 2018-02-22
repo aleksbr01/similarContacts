@@ -11,4 +11,4 @@
         </apex:pageBlock>
     	<apex:commandButton value="Similar Contacts" action="{! URLFOR($Page.SimilarContactsList) }"/>
 	</apex:form>
-</apex:page>
+</apex:page>git
