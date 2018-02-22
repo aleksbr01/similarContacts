@@ -1,0 +1,74 @@
+<apex:page controller="SimilarContactsController">
+<style>
+.ct{text-align:center;}
+</style>
+    <apex:form >
+        <apex:pageMessages />
+        <apex:pageBlock id="date_Panel">
+            <apex:pageBlockTable value="{!wrappedContacts}" var="wc" rendered="{!wrappedContacts != null}">
+                <apex:column width="2px" headerClass="ct">
+                    <apex:facet name="header">#</apex:facet>
+                    <div style="text-align: center">
+                        {!wc.contactCounter}
+                    </div>
+                </apex:column>
+                <apex:column width="80px" headerClass="ct">
+                    <apex:facet name="header">Contact</apex:facet>
+                    <apex:commandLink action="{!setSelectedContact}">
+                        {!wc.mainContact.Id}
+                        {!wc.mainContact.FirstName}
+                        {!wc.mainContact.LastName}
+                        {!wc.mainContact.Email}
+                        <apex:param name="clickedContactId" assignTo="{!clickedContactId}" value="{!wc.mainContact.Id}" />
+                    </apex:commandLink>
+                </apex:column>
+                <apex:column width="80px" headerClass="ct">
+                    <apex:facet name="header">Possible Contacts</apex:facet>
+                    <apex:repeat value="{!wc.possibleContact}" var="possible" rendered="{!wc.possibleContact != null}">
+                        <p style="background:yellow;">
+                            <apex:commandLink action="{!setSelectedContact}">
+                                {!possible.Id}
+                                {!possible.FirstName} 
+                                {!possible.LastName}
+                                {!possible.Email}
+                                <apex:param name="clickedContactId" assignTo="{!clickedContactId}" value="{!wc.possibleContact.Id}" />
+                            </apex:commandLink>
+                        	<div style="text-align: right">
+                                <apex:commandButton title="Merge possible contact" value="Merge contact" onclick="mergeContacts('{!wc.mainContact.Id}, {!wc.possibleContact.Id}')"/>   
+                            </div>
+                    	</p>
+                	</apex:repeat>
+                	<apex:repeat value="{!wc.explicitContact}" var="explicit" rendered="{!wc.explicitContact != null}">
+                        <p style="background:red;">
+                            <apex:commandLink action="{!setSelectedContact}">
+                                {!explicit.Id}
+                                {!explicit.FirstName} 
+                                {!explicit.LastName}
+                                {!explicit.Email}
+                                <apex:param name="clickedContactId" assignTo="{!clickedContactId}" value="{!wc.explicitContact.Id}" />
+                            </apex:commandLink>
+                            <div style="text-align: right">
+                                <apex:commandButton title="Merge explicit contact" value="Merge contact" onclick="mergeContacts('{!wc.mainContact.Id}, {!wc.explicitContact.Id}')"/>
+                                <apex:commandButton title="Delete explicit contact" value="Delete contact" onclick="deleteContact('{!wc.explicitContact.Id}')"/>
+                            </div>
+                		</p>
+            		</apex:repeat>
+                </apex:column>
+            </apex:pageBlockTable>
+<!--
+            <apex:pageBlockButtons >
+                <apex:commandButton reRender="date_Panel" value="refresh" title="refreshing" />
+    		</apex:pageBlockButtons>
+-->
+        </apex:pageBlock>
+        <apex:actionFunction action="{!mergeContacts}" name="mergeContacts" reRender="date_Panel">
+            <apex:param name="contactsIdForMerge" value="" />
+        </apex:actionFunction>
+		<apex:actionFunction action="{!deleteContact}" name="deleteContact" reRender="date_Panel">
+            <apex:param name="contactsIdForDelete" value="" />
+        </apex:actionFunction>
+		
+        
+    </apex:form>
+    
+</apex:page>

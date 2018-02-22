@@ -1,0 +1,14 @@
+<apex:page controller="ContactDetails" tabStyle="Contact">
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection title="Contact">
+                <apex:pageBlockTable value="{!clickedContact}" var="cont">
+                    <apex:repeat value="{!$ObjectType.Contact.fieldsets.contactFieldSet}" var="fieldValue">
+                        <apex:column value="{!cont[fieldValue]}" />
+                    </apex:repeat>
+            	</apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    	<apex:commandButton value="Similar Contacts" action="{! URLFOR($Page.SimilarContactsList) }"/>
+	</apex:form>
+</apex:page>
